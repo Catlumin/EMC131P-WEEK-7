@@ -31,7 +31,20 @@ function getFlag(){
 
 }
 function collideEnemies(player,enemy){
+    playerHP -= 1;
+    player.x = 100;
+    player.y = 740;
+    playerTextHP.setText('Health Left : ' + playerHP);
+    console.log(playerHP);
+    if(playerHP <= 0){
     this.physics.pause();
     player.disableBody(true,true);
-    this.scene.start('endScene',score,minutes,seconds);
+    playerHP = 3;
+    this.scene.start('endScene',score,minutes,seconds);}
+
+}
+
+function getCoin(player,coin){
+    score += 1;
+    
 }

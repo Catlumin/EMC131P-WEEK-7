@@ -60,17 +60,19 @@ class level1 extends Phaser.Scene{
     enemy.children.iterate(function (child, index) {
         child.x = xEnemyPos[index];
         child.y = yEnemyPos[index];
+        child.setScale(.8);
     });
 
     //FLAG
 
     //SCORE TEXT & GAME TIME
-    scoreText = this.add.text(30, 50, 'Score: 0', { fontSize: '32px', fill: '#fff' });
-    playerTimeText = this.add.text(550, 50, 'Time: 0:00', { fontSize: '32px', fill: '#fff' });
-    playerTextHP = this.add.text(30, 100, 'Health Left : 3', { fontSize: '32px', fill: '#fff' });
+    scoreText = this.add.text(150, 150, 'Score: 0', { fontSize: '32px', fill: '#fff' }).setScale(.5);
+    playerTimeText = this.add.text(500, 150, 'Time: 0:00', { fontSize: '32px', fill: '#fff' }).setScale(.5);
+    playerTextHP = this.add.text(150, 200, 'Health Left : 3', { fontSize: '32px', fill: '#fff' }).setScale(.5);
     scoreText.setScrollFactor(0);
     playerTimeText.setScrollFactor(0);
     playerTextHP.setScrollFactor(0);
+
     //KEYS
     cursors = this.input.keyboard.createCursorKeys();
     //COLLIDER
@@ -99,7 +101,7 @@ class level1 extends Phaser.Scene{
             player.setVelocityY(-330);
         }
         timer();
-        console.log('player X '+ player.x + 'player Y ' + player.y);
+       // console.log('player X '+ player.x + 'player Y ' + player.y);
 
         playerOnVoid(this);
     }
