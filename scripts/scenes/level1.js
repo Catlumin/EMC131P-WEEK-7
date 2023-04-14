@@ -129,8 +129,9 @@ class level1 extends Phaser.Scene{
         {
             player.setVelocityY(-330);
         }
+        //TIMER
         timer();
-        //console.log('player X '+ player.x + 'player Y ' + player.y);
+        //Check if player on Void
         playerOnVoid(this);
     }
 }
