@@ -7,7 +7,7 @@ class winScene extends Phaser.Scene{
      
         this.load.image('resetWin','assets/misc/retryButton.jpg');
         this.load.image('returnMain','assets/misc/ExitButton.jpg');
-        this.load.image('winBg', 'assets/background/game_background_3.1.png');
+        this.load.image('winBg', 'assets/background/game_background_4.png');
         
     }
     create() {
@@ -17,7 +17,7 @@ class winScene extends Phaser.Scene{
         const playerMinutes = minutes;
         const playerSeconds = seconds.toString().padStart(2, '0');
 
-        this.add.image(400, 300, 'winBg');
+        this.add.image(400, 300, 'winBg').setScale(1.5);
         const gameOverText = this.add.text(400, 300, 'You Won!\nScore: '+ playerScore + '\nTime Survived: '+ playerMinutes +':'+ playerSeconds , {
             fontFamily: 'Arial',
             fontSize: '32px',

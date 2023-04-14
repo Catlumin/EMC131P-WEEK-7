@@ -1,7 +1,7 @@
 var config = {
     type: Phaser.AUTO,
     width: 800,
-    height: 800,
+    height: 1200,
     physics: {
         default: 'arcade',
         arcade: {
@@ -9,7 +9,7 @@ var config = {
             debug: false
         }
     },
-    scene: [menuScene,level1,creditScene,gameOverScene]
+    scene: [menuScene,level1,creditScene,gameOverScene,winScene]
 };
 var game = new Phaser.Game(config);
 
@@ -27,8 +27,10 @@ function playerOnVoid(game){
     }
 }
 
-function getFlag(){
-
+function getFlag(player, goal){
+    this.physics.pause();
+    player.disableBody(true,true);
+    this.scene.start('winScene',score,minutes,seconds);
 }
 function collideEnemies(player,enemy){
     playerHP -= 1;

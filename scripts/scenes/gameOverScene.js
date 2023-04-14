@@ -17,7 +17,7 @@ class gameOverScene extends Phaser.Scene{
         const playerMinutes = minutes;
         const playerSeconds = seconds.toString().padStart(2, '0');
 
-        this.add.image(400, 300, 'gameOverBg');
+        this.add.image(400, 300, 'gameOverBg').setScale(1.5);
         const gameOverText = this.add.text(400, 300, 'Game Over!\nScore: '+ playerScore + '\nTime Survived: '+ playerMinutes +':'+ playerSeconds , {
             fontFamily: 'Arial',
             fontSize: '32px',

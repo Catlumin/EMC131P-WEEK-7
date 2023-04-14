@@ -14,24 +14,27 @@ var playerHP = 3;
 var playerTextHP;
 var xEnemyPos = [206,494,323,172,489,144];
 var yEnemyPos = [720,648,498,498,348,148];
+var goal;
 class level1 extends Phaser.Scene{
     constructor(){
         super('level1');
     }
 
     preload (){
-        this.load.image('bg', 'assets/background/game_background_4.png');
+        this.load.image('bg', 'assets/background/background_cave.png');
         this.load.image('frog', 'assets/enemy/frog-x4.gif');
         this.load.image('bullet', 'assets/misc/fire-ball.gif');
         this.load.image('ground', 'assets/misc/platform.png');
+        this.load.image('flag', 'assets/misc/red_barrel.png');
         this.load.spritesheet('wizard', 'assets/spritesheet/AnimationSheet_Character.png', { frameWidth: 32, frameHeight: 32 });
         this.load.audio('pop', 'assets/sounds/Fire_AttackF1.wav');
         this.load.audio('gameSFX', 'assets/sounds/game.wav');
         this.load.audio('hitSFX', 'assets/sounds/Splat3.wav');
+        
     }
     create(){
     //BACKGROUND
-    this.add.image(400, 300, 'bg');
+    this.add.image(400, 300, 'bg').setScale(5);
 
 
     platforms = this.physics.add.staticGroup();
@@ -43,11 +46,19 @@ class level1 extends Phaser.Scene{
     platforms.create(200,550, 'ground');
     platforms.create(550,700, 'ground');
     
+    //GOAL
+    goal = this.physics.add.group({
+        key: 'flag',
+        repeat: 0,
+        setXY:  {x:0,y:168, stepX: 10}
+    });
+    //COIN
+    
     //PLAYER
     player = this.physics.add.sprite(100, 740, 'wizard');
     player.setBounce(0.2);
     this.cameras.main.startFollow(player);
-    this.cameras.main.setZoom(1.5);
+   // this.cameras.main.setZoom(2.5);
     this.cameras.main.setLerp(0.1, 0.1);
     //ENEMY
     enemy = this.physics.add.group({
@@ -66,9 +77,9 @@ class level1 extends Phaser.Scene{
     //FLAG
 
     //SCORE TEXT & GAME TIME
-    scoreText = this.add.text(150, 150, 'Score: 0', { fontSize: '32px', fill: '#fff' }).setScale(.5);
-    playerTimeText = this.add.text(500, 150, 'Time: 0:00', { fontSize: '32px', fill: '#fff' }).setScale(.5);
-    playerTextHP = this.add.text(150, 200, 'Health Left : 3', { fontSize: '32px', fill: '#fff' }).setScale(.5);
+    scoreText = this.add.text(250, 380, 'Score: 0', { fontSize: '32px', fill: '#fff' }).setScale(.5);
+    playerTimeText = this.add.text(450, 380, 'Time: 0:00', { fontSize: '32px', fill: '#fff' }).setScale(.5);
+    playerTextHP = this.add.text(250, 400, 'Health Left : 3', { fontSize: '32px', fill: '#fff' }).setScale(.5);
     scoreText.setScrollFactor(0);
     playerTimeText.setScrollFactor(0);
     playerTextHP.setScrollFactor(0);
@@ -78,7 +89,9 @@ class level1 extends Phaser.Scene{
     //COLLIDER
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(enemy, platforms);
+    this.physics.add.collider(goal, platforms);
     this.physics.add.overlap(player, enemy, collideEnemies, null, this);
+    this.physics.add.overlap(player,goal,getFlag,null,this);
     }
     update(){
         if (cursors.left.isDown)
@@ -101,7 +114,7 @@ class level1 extends Phaser.Scene{
             player.setVelocityY(-330);
         }
         timer();
-       // console.log('player X '+ player.x + 'player Y ' + player.y);
+        //console.log('player X '+ player.x + 'player Y ' + player.y);
 
         playerOnVoid(this);
     }
