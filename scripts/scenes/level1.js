@@ -130,7 +130,7 @@ class level1 extends Phaser.Scene{
             player.setVelocityY(-330);
         }
         timer();
-        console.log('player X '+ player.x + 'player Y ' + player.y);
+        //console.log('player X '+ player.x + 'player Y ' + player.y);
         playerOnVoid(this);
     }
 }
