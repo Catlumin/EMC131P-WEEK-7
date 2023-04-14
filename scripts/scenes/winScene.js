@@ -12,7 +12,7 @@ class winScene extends Phaser.Scene{
     }
     create() {
 
-        // S-C-O-R-E-B-O-A-R-D
+        //SCOREBOARD
         const playerScore = score;
         const playerMinutes = minutes;
         const playerSeconds = seconds.toString().padStart(2, '0');
@@ -25,7 +25,7 @@ class winScene extends Phaser.Scene{
         });
         gameOverText.setOrigin(0.5);
         
-        // B-U-T-T-O-N-S
+        //BUTTONS
         const resetButton = this.add.image(300,500,'resetWin').setScale(.4);
         resetButton.setInteractive();
         resetButton.on('pointerdown', () => {this.scene.start('level1');

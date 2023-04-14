@@ -10,8 +10,9 @@ class creditScene extends Phaser.Scene{
         
     }
     create(){
-
+        //BACKGROUND
         this.add.image(400, 300, 'crd');
+        //BUTTONS
         const returnButton = this.add.image(100,100,'return').setScale(.2);
         returnButton.setInteractive();
         returnButton.on('pointerdown', () => {this.scene.start('menuScene')});

@@ -53,7 +53,7 @@ class level1 extends Phaser.Scene{
         setXY:  {x:0,y:168, stepX: 10}
     });
     //COIN
-    
+
     //PLAYER
     player = this.physics.add.sprite(100, 740, 'wizard');
     player.setBounce(0.2);
@@ -74,7 +74,7 @@ class level1 extends Phaser.Scene{
         child.setScale(.8);
     });
 
-    //FLAG
+  
 
     //SCORE TEXT & GAME TIME
     scoreText = this.add.text(250, 380, 'Score: 0', { fontSize: '32px', fill: '#fff' }).setScale(.5);
@@ -97,11 +97,12 @@ class level1 extends Phaser.Scene{
         if (cursors.left.isDown)
         {
             player.setVelocityX(-160);
-          
+            player.flipX = true;
         }
         else if (cursors.right.isDown)
         {
             player.setVelocityX(160);
+            player.flipX = false;
            
         }
         else
@@ -115,7 +116,6 @@ class level1 extends Phaser.Scene{
         }
         timer();
         //console.log('player X '+ player.x + 'player Y ' + player.y);
-
         playerOnVoid(this);
     }
 }

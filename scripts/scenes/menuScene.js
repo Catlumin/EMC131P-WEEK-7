@@ -14,8 +14,10 @@ class menuScene extends Phaser.Scene{
     }
 
     create(){
-    
+        //BACKGROUND
         this.add.image(400, 300, 'menuBackground').setScale(1.5);
+        
+        //BUTTONS
         const playButton = this.add.image(400,250,'play').setScale(0.7);
         playButton.setInteractive();
         playButton.on('pointerdown', () => {this.scene.start('level1');
