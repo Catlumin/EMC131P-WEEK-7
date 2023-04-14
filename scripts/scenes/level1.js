@@ -58,7 +58,7 @@ class level1 extends Phaser.Scene{
     player = this.physics.add.sprite(100, 740, 'wizard');
     player.setBounce(0.2);
     this.cameras.main.startFollow(player);
-   // this.cameras.main.setZoom(2.5);
+    this.cameras.main.setZoom(2.5);
     this.cameras.main.setLerp(0.1, 0.1);
     //ENEMY
     enemy = this.physics.add.group({
