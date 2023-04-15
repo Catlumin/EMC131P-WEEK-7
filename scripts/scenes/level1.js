@@ -39,7 +39,6 @@ class level1 extends Phaser.Scene{
         this.load.audio('levelBGM', 'assets/sounds/in-the-wreckage.wav');
         this.load.audio('hit', 'assets/sounds/03_Step_grass_03.wav');
         this.load.audio('crateSFX', 'assets/sounds/03_crate_open_1.wav');
-        
     }
     create(){
     //BACKGROUND
@@ -53,6 +52,7 @@ class level1 extends Phaser.Scene{
     platforms.create(1000, 650, 'platform').setScale(1);
     platforms.create(1600, 800, 'platform').setScale(1);
     platforms.create(2000, 650, 'platform').setScale(1);
+    platforms.setTint(0x4b0082);
 
     //SOUND
     splatEnemy = this.sound.add('splat');
