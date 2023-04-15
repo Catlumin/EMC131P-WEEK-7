@@ -24,6 +24,7 @@ function timer(){
 function playerOnVoid(game){
     if(player.y >= 784){
         game.scene.start('endScene',score,minutes,seconds);
+        gameBGM.stop();
     }
 }
 
@@ -35,22 +36,26 @@ function getFlag(player, goal){
 function collideEnemies(player,enemy){
    if(player.y + player.height <= enemy.y){ 
     enemy.destroy();
+    splatEnemy.play();
    }else{
     playerHP -= 1;
     player.x = 100;
     player.y = 740;
     playerTextHP.setText('Health Left : ' + playerHP);
+    playerIsHit.play();
     console.log(playerHP);
    }
     if(playerHP <= 0){
     this.physics.pause();
     player.disableBody(true,true);
     playerHP = 3;
-    this.scene.start('endScene',score,minutes,seconds);}
+    this.scene.start('endScene',score,minutes,seconds,gameBGM.stop());}
+   
 }
 
 function getCoin(player,coin){
     score += 1;
+    crateCollideSFX.play();
     coin.destroy();
     scoreText.setText('Score: ' + score);
 }

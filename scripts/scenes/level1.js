@@ -12,12 +12,16 @@ var platforms;
 var cursors;
 var playerHP = 3;
 var playerTextHP;
-var xEnemyPos = [206,494,323,172,489,144];
-var yEnemyPos = [720,648,498,498,348,148];
+var xEnemyPos = [548,958,1234,1594,261,1955];
+var yEnemyPos = [760,605,760,760,760,599];
 var goal;
 var coin;
-var coinPosX = [620,81,752];
-var coinPosY = [668,518,188];
+var coinPosX = [1047,405,1770];
+var coinPosY = [760,760,760];
+var splatEnemy;
+var gameBGM;
+var playerIsHit;
+var crateCollideSFX;
 class level1 extends Phaser.Scene{
     constructor(){
         super('level1');
@@ -27,39 +31,56 @@ class level1 extends Phaser.Scene{
         this.load.image('bg', 'assets/background/background_cave.png');
         this.load.image('frog', 'assets/enemy/frog-x4.gif');
         this.load.image('bullet', 'assets/misc/fire-ball.gif');
-        this.load.image('ground', 'assets/misc/platform.png');
+        this.load.image('platform', 'assets/misc/platform.png')
         this.load.image('flag', 'assets/misc/red_barrel.png');
         this.load.image('coins', 'assets/misc/crate.png');
         this.load.spritesheet('wizard', 'assets/spritesheet/AnimationSheet_Character.png', { frameWidth: 32, frameHeight: 32 });
+        this.load.audio('splat', 'assets/sounds/Splat3.wav');
+        this.load.audio('levelBGM', 'assets/sounds/in-the-wreckage.wav');
+        this.load.audio('hit', 'assets/sounds/03_Step_grass_03.wav');
+        this.load.audio('crateSFX', 'assets/sounds/03_crate_open_1.wav');
         
     }
     create(){
     //BACKGROUND
-    this.add.image(400, 300, 'bg').setScale(5);
+    this.add.image(400, 300, 'bg').setScale(5).setScrollFactor(0);
 
-
+    //PLATFORM
     platforms = this.physics.add.staticGroup();
+    platforms.create(100, 800, 'platform').setScale(1);
+    platforms.create(500, 800, 'platform').setScale(1);
+    platforms.create(1200, 800, 'platform').setScale(1);
+    platforms.create(1000, 650, 'platform').setScale(1);
+    platforms.create(1600, 800, 'platform').setScale(1);
+    platforms.create(2000, 650, 'platform').setScale(1);
 
-    platforms.create(100, 790, 'ground');
-    platforms.create(600, 400, 'ground');
-    platforms.create(50, 200, 'ground');
-    platforms.create(750, 220, 'ground');
-    platforms.create(200,550, 'ground');
-    platforms.create(550,700, 'ground');
-    platforms.setTint(0x0f137d);
+    //SOUND
+    splatEnemy = this.sound.add('splat');
+    playerIsHit = this.sound.add('hit');
+    gameBGM  = this.sound.add('levelBGM');
+    gameBGM.play({
+        loop: true
+    });
+    playerIsHit = this.sound.add('hit');
+    crateCollideSFX = this.sound.add('crateSFX');
     //GOAL
     goal = this.physics.add.group({
         key: 'flag',
         repeat: 0,
-        setXY:  {x:0,y:168, stepX: 10}
+        setXY:  {x:2130,y:550, stepX: 0}
     });
   
     //PLAYER
     player = this.physics.add.sprite(100, 740, 'wizard');
     player.setBounce(0.2);
+    player.setCollideWorldBounds(true);
+    this.physics.world.setBoundsCollision(true, false, false, true);
+
+    //CAMERA
     this.cameras.main.startFollow(player);
     this.cameras.main.setZoom(2.5);
     this.cameras.main.setLerp(0.1, 0.1);
+    this.cameras.main.setBounds(0,0, this.widthInPixels, this.heightInPixels);
       //COIN
       coin = this.physics.add.group({
         key: 'coins',
@@ -105,7 +126,7 @@ class level1 extends Phaser.Scene{
     this.physics.add.collider(enemy, platforms);
     this.physics.add.collider(goal, platforms);
     this.physics.add.collider(coin, platforms);
-    this.physics.add.overlap(player, enemy, collideEnemies, null, this);
+    this.physics.add.overlap(player,enemy, collideEnemies,null, this);
     this.physics.add.overlap(player,goal,getFlag,null,this);
     this.physics.add.overlap(player,coin,getCoin,null,this);
     }
@@ -128,9 +149,11 @@ class level1 extends Phaser.Scene{
         if (cursors.up.isDown && player.body.touching.down)
         {
             player.setVelocityY(-330);
+            
         }
         //TIMER
         timer();
+        console.log('Player X: ' + player.x + ' Plyer Y: ' + player.y)
         //Check if player on Void
         playerOnVoid(this);
     }
