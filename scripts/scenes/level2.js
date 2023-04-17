@@ -173,6 +173,6 @@ class level2 extends Phaser.Scene{
         this.physics.pause();
         player.disableBody(true,true);
         goal.destroy();
-        this.scene.start('level3',score = 0 , playerTime = 0,chestSmashed = 0,gameBGM.stop());
+        this.scene.start('level3',score = 0 , playerTime = 0,chestSmashed = 0,gameBGM.stop(),playerHP = 3);
       }
 }

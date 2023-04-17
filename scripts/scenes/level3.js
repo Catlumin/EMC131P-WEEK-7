@@ -172,6 +172,6 @@ class level3 extends Phaser.Scene{
         this.physics.pause();
         player.disableBody(true,true);
         goal.destroy();
-        this.scene.start('winScene',score,minutes,seconds,chestSmashed,gameBGM.stop());
+        this.scene.start('winScene',score,minutes,seconds,chestSmashed,gameBGM.stop(),playerHP = 3);
       }
 }
