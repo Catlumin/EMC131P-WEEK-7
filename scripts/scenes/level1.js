@@ -65,6 +65,7 @@ class level1 extends Phaser.Scene{
     //SOUND
     splatEnemy = this.sound.add('splat');
     playerIsHit = this.sound.add('hit');
+
     gameBGM  = this.sound.add('levelBGM');
     gameBGM.play({
         loop: true
@@ -88,7 +89,7 @@ class level1 extends Phaser.Scene{
 
     //CAMERA
     this.cameras.main.startFollow(player);
-    this.cameras.main.setZoom(2.5);
+    //this.cameras.main.setZoom(2.5);
     this.cameras.main.setLerp(0.1, 0.1);
     this.cameras.main.setBounds(0,0, this.widthInPixels, this.heightInPixels);
     //COIN
@@ -132,8 +133,8 @@ class level1 extends Phaser.Scene{
     chestCollectedText.setScrollFactor(0);
 
     //KEYS
-    cursors = this.input.keyboard.createCursorKeys();
-    //COLLIDER
+    
+    //COLLIDER*/
     this.physics.add.collider(player, worldLayer);
     this.physics.add.collider(enemy, worldLayer);
     this.physics.add.collider(goal, worldLayer);
@@ -141,6 +142,7 @@ class level1 extends Phaser.Scene{
     this.physics.add.collider(player,enemy,collideEnemies,null, this);
     this.physics.add.overlap(player,goal,this.collectFlag,null,this);
     this.physics.add.overlap(player,coin,getCoin,null,this);
+    cursors = this.input.keyboard.createCursorKeys();
     }
     update(){
         if (cursors.left.isDown)
@@ -160,7 +162,7 @@ class level1 extends Phaser.Scene{
     
         if (cursors.up.isDown && player.body.onFloor())
         {
-            player.setVelocityY(-200);
+            player.setVelocityY(-400);
             
         }
         //TIMER

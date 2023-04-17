@@ -11,17 +11,17 @@ var gameBGM;
 var cursors;
 var playerHP = 3;
 var playerTextHP;
-var xEnemyPos = [172,314,263,535,609,871];
-var yEnemyPos = [238,274,203,165,257,255];
+var xEnemyPosTwo = [119,204,303,275,330,754];
+var yEnemyPosTwo = [150,150,150,150,150,150];
 var coin;
-var coinPosX = [180,273,444,775,951];
-var coinPosY = [147,274,237,292,309];
+var coinPosXTwo = [116,300,911,962,762];
+var coinPosYTwo = [101,150,150,150,150];
 var splatEnemy;
 var playerIsHit;
 var crateCollideSFX;
-var worldLayer;
-var acidLayer;
-var goal;
+var worldLayerTwo;
+var acidLayerTwo;
+var goalTwo;
 var chestSmashed = 0;
 var chestCollectedText;
 class level2 extends Phaser.Scene{
@@ -42,24 +42,23 @@ class level2 extends Phaser.Scene{
         this.load.audio('levelBGM', 'assets/sounds/in-the-wreckage.wav');
         this.load.audio('hit', 'assets/sounds/03_Step_grass_03.wav');
         this.load.audio('crateSFX', 'assets/sounds/03_crate_open_1.wav');
-
-        this.load.image('tiles', 'assets/spritesheet/tilemap_packed.png');
-        this.load.tilemapTiledJSON('map1', 'assets/maps/map1.json');
+        this.load.image('tiled', 'assets/spritesheet/tilemap_packed.png');
+        this.load.tilemapTiledJSON('map2', 'assets/maps/map2.json');
     }
     create(){
     //BACKGROUND
     this.add.image(400, 300, 'bg');
 
     //MAP
-    const map = this.make.tilemap({key : 'map1'});
-    const tileSet = map.addTilesetImage('mapcompact', 'tiles');
-    worldLayer =  map.createLayer('worldLayer', tileSet);
-    worldLayer.setCollisionByExclusion([-1]);
-    acidLayer = map.createLayer('acidLayer', tileSet);
-    acidLayer.setCollisionByExclusion([-1]);
-    map.createLayer('backGroundObject', tileSet);
-    goal = map.createLayer('flag', tileSet);
-    goal.setCollisionByExclusion([-1]);
+    const map = this.make.tilemap({key : 'map2'});
+    const tileSet = map.addTilesetImage('tilemap_packed', 'tiled');
+    worldLayerTwo =  map.createLayer('groundLayer', tileSet);
+    worldLayerTwo.setCollisionByExclusion([-1]);
+    acidLayerTwo = map.createLayer('acid2Layer', tileSet);
+    acidLayerTwo.setCollisionByExclusion([-1]);
+    map.createLayer('backGroundLayer', tileSet);
+    goalTwo = map.createLayer('flag', tileSet);
+    goalTwo.setCollisionByExclusion([-1]);
    
     //SOUND
     splatEnemy = this.sound.add('splat');
@@ -74,7 +73,7 @@ class level2 extends Phaser.Scene{
     goal = this.physics.add.group({
         key: 'flag',
         repeat: 0,
-        setXY:  {x:887,y:167, stepX: 0}
+        setXY:  {x:1071,y:237, stepX: 0}
     });
   
     //PLAYER
@@ -87,7 +86,7 @@ class level2 extends Phaser.Scene{
 
     //CAMERA
     this.cameras.main.startFollow(player);
-    this.cameras.main.setZoom(2.5);
+    //this.cameras.main.setZoom(2.5);
     this.cameras.main.setLerp(0.1, 0.1);
     this.cameras.main.setBounds(0,0, this.widthInPixels, this.heightInPixels);
     //COIN
@@ -99,8 +98,8 @@ class level2 extends Phaser.Scene{
                  stepX: 40 }
     })
     coin.children.iterate(function (child, index){
-        child.x = coinPosX[index];
-        child.y = coinPosY[index];
+        child.x = coinPosXTwo[index];
+        child.y = coinPosYTwo[index];
         child.setScale(1);
         child.setGravity(0);
     });
@@ -113,8 +112,8 @@ class level2 extends Phaser.Scene{
                  stepX: 40 }
     });
     enemy.children.iterate(function (child, index) {
-        child.x = xEnemyPos[index];
-        child.y = yEnemyPos[index];
+        child.x = xEnemyPosTwo[index];
+        child.y = yEnemyPosTwo[index];
         child.setScale(.2);
         child.flipX = true;
         child.body.immovable = true;
@@ -133,10 +132,10 @@ class level2 extends Phaser.Scene{
     //KEYS
     cursors = this.input.keyboard.createCursorKeys();
     //COLLIDER
-    this.physics.add.collider(player, worldLayer);
-    this.physics.add.collider(enemy, worldLayer);
-    this.physics.add.collider(goal, worldLayer);
-    this.physics.add.collider(coin, worldLayer);
+    this.physics.add.collider(player, worldLayerTwo);
+    this.physics.add.collider(enemy, worldLayerTwo);
+    this.physics.add.collider(goal, worldLayerTwo);
+    this.physics.add.collider(coin, worldLayerTwo);
     this.physics.add.collider(player,enemy,collideEnemies,null, this);
     this.physics.add.overlap(player,goal,this.collectFlag,null,this);
     this.physics.add.overlap(player,coin,getCoin,null,this);
@@ -164,7 +163,7 @@ class level2 extends Phaser.Scene{
         }
         //TIMER
         timer();
-        //console.log('Player X: ' + player.x + ' Plyer Y: ' + player.y)
+        console.log('Player X: ' + player.x + ' Plyer Y: ' + player.y)
         //Check if player on Void
         playerOnVoid(this);
     }
