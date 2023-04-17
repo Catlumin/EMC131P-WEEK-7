@@ -8,23 +8,26 @@ var minutes = 0;
 var seconds = 0;
 var playerTimeText;
 var gameBGM;
-var platforms;
 var cursors;
 var playerHP = 3;
 var playerTextHP;
-var xEnemyPos = [548,958,1234,1594,261,1955];
-var yEnemyPos = [760,605,760,760,760,599];
-var goal;
+var xEnemyPos = [172,314,263,535,609,871];
+var yEnemyPos = [238,274,203,165,257,255];
 var coin;
-var coinPosX = [1047,405,1770];
-var coinPosY = [760,760,760];
+var coinPosX = [180,273,444,775,951];
+var coinPosY = [147,274,237,292,309];
 var splatEnemy;
-var gameBGM;
 var playerIsHit;
 var crateCollideSFX;
+var worldLayer;
+var acidLayer;
+var goal;
+var chestSmashed = 0;
+var chestCollectedText;
 class level1 extends Phaser.Scene{
     constructor(){
         super('level1');
+        
     }
 
     preload (){
@@ -33,26 +36,35 @@ class level1 extends Phaser.Scene{
         this.load.image('bullet', 'assets/misc/fire-ball.gif');
         this.load.image('platform', 'assets/misc/platform.png')
         this.load.image('flag', 'assets/misc/red_barrel.png');
-        this.load.image('coins', 'assets/misc/crate.png');
+        this.load.image('coins', 'assets/misc/tile_0061.png');
         this.load.spritesheet('wizard', 'assets/spritesheet/AnimationSheet_Character.png', { frameWidth: 32, frameHeight: 32 });
         this.load.audio('splat', 'assets/sounds/Splat3.wav');
         this.load.audio('levelBGM', 'assets/sounds/in-the-wreckage.wav');
         this.load.audio('hit', 'assets/sounds/03_Step_grass_03.wav');
         this.load.audio('crateSFX', 'assets/sounds/03_crate_open_1.wav');
+
+        this.load.image('tiles', 'assets/spritesheet/tilemap_packed.png');
+        this.load.tilemapTiledJSON('map1', 'assets/maps/map1.json');
     }
     create(){
+
+    //MAP
+  
+
+    const map = this.make.tilemap({key : 'map1'});
+    const tileSet = map.addTilesetImage('mapcompact', 'tiles');
+    worldLayer =  map.createLayer('worldLayer', tileSet);
+    worldLayer.setCollisionByExclusion([-1]);
+    acidLayer = map.createLayer('acidLayer', tileSet);
+    acidLayer.setCollisionByExclusion([-1]);
+    map.createLayer('backGroundObject', tileSet);
+    goal = map.createLayer('flag', tileSet);
+    goal.setCollisionByExclusion([-1]);
     //BACKGROUND
-    this.add.image(400, 300, 'bg').setScale(5).setScrollFactor(0);
+
+
 
     //PLATFORM
-    platforms = this.physics.add.staticGroup();
-    platforms.create(100, 800, 'platform').setScale(1);
-    platforms.create(500, 800, 'platform').setScale(1);
-    platforms.create(1200, 800, 'platform').setScale(1);
-    platforms.create(1000, 650, 'platform').setScale(1);
-    platforms.create(1600, 800, 'platform').setScale(1);
-    platforms.create(2000, 650, 'platform').setScale(1);
-    platforms.setTint(0x4b0082);
 
     //SOUND
     splatEnemy = this.sound.add('splat');
@@ -67,14 +79,16 @@ class level1 extends Phaser.Scene{
     goal = this.physics.add.group({
         key: 'flag',
         repeat: 0,
-        setXY:  {x:2130,y:550, stepX: 0}
+        setXY:  {x:887,y:167, stepX: 0}
     });
   
     //PLAYER
-    player = this.physics.add.sprite(100, 740, 'wizard');
+    player = this.physics.add.sprite(0, 237, 'wizard');
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
-    this.physics.world.setBoundsCollision(true, false, false, true);
+    player.setGravity(0,0);
+    player.setScale(0.8);
+    this.physics.world.setBoundsCollision(true, false, false, false);
 
     //CAMERA
     this.cameras.main.startFollow(player);
@@ -82,9 +96,9 @@ class level1 extends Phaser.Scene{
     this.cameras.main.setLerp(0.1, 0.1);
     this.cameras.main.setBounds(0,0, this.widthInPixels, this.heightInPixels);
       //COIN
-      coin = this.physics.add.group({
+    coin = this.physics.add.group({
         key: 'coins',
-        repeat: 2,
+        repeat: 4,
         setXY:  {x: 0,
                  y: 0,
                  stepX: 40 }
@@ -106,27 +120,28 @@ class level1 extends Phaser.Scene{
     enemy.children.iterate(function (child, index) {
         child.x = xEnemyPos[index];
         child.y = yEnemyPos[index];
-        child.setScale(.8);
+        child.setScale(.2);
+        child.flipX = true;
     });
 
-  
-
     //SCORE TEXT & GAME TIME
-    scoreText = this.add.text(250, 380, 'Score: 0', { fontSize: '32px', fill: '#fff' }).setScale(.5);
-    playerTimeText = this.add.text(450, 380, 'Time: 0:00', { fontSize: '32px', fill: '#fff' }).setScale(.5);
-    playerTextHP = this.add.text(250, 400, 'Health Left : 3', { fontSize: '32px', fill: '#fff' }).setScale(.5);
+    scoreText = this.add.text(0, 0, 'Score: 0', { fontSize: '32px', fill: '#fff' }).setScale(.5);
+    chestCollectedText = this.add.text(0, 20, 'Chest Smashed: 0', { fontSize: '32px', fill: '#fff' }).setScale(.5);
+    playerTimeText = this.add.text(0, 60, 'Time: 0:00', { fontSize: '32px', fill: '#fff' }).setScale(.5);
+    playerTextHP = this.add.text(0, 40, 'Health Left : 3', { fontSize: '32px', fill: '#fff' }).setScale(.5);
     scoreText.setScrollFactor(0);
     playerTimeText.setScrollFactor(0);
     playerTextHP.setScrollFactor(0);
+    chestCollectedText.setScrollFactor(0);
 
     //KEYS
     cursors = this.input.keyboard.createCursorKeys();
     //COLLIDER
-    this.physics.add.collider(player, platforms);
-    this.physics.add.collider(enemy, platforms);
-    this.physics.add.collider(goal, platforms);
-    this.physics.add.collider(coin, platforms);
-    this.physics.add.overlap(player,enemy, collideEnemies,null, this);
+    this.physics.add.collider(player, worldLayer);
+    this.physics.add.collider(enemy, worldLayer);
+    this.physics.add.collider(goal, worldLayer);
+    this.physics.add.collider(coin, worldLayer);
+    this.physics.add.collider(player,enemy,collideEnemies,null, this);
     this.physics.add.overlap(player,goal,getFlag,null,this);
     this.physics.add.overlap(player,coin,getCoin,null,this);
     }
@@ -146,14 +161,14 @@ class level1 extends Phaser.Scene{
             player.setVelocityX(0);
         }
     
-        if (cursors.up.isDown && player.body.touching.down)
+        if (cursors.up.isDown && player.body.onFloor())
         {
-            player.setVelocityY(-330);
+            player.setVelocityY(-200);
             
         }
         //TIMER
         timer();
-        console.log('Player X: ' + player.x + ' Plyer Y: ' + player.y)
+        //console.log('Player X: ' + player.x + ' Plyer Y: ' + player.y)
         //Check if player on Void
         playerOnVoid(this);
     }

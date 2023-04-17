@@ -22,7 +22,8 @@ class menuScene extends Phaser.Scene{
         playButton.setInteractive();
         playButton.on('pointerdown', () => {this.scene.start('level1');
         score = 0;
-        playerTime = 0 ;
+        playerTime = 0;
+        chestSmashed = 0;
         });
         
         const creditButton = this.add.image(400,350,'creditsButton').setScale(0.45);
