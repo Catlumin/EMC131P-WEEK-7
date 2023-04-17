@@ -170,7 +170,6 @@ class level1 extends Phaser.Scene{
         playerOnVoid(this);
     }
     collectFlag(player, goal) {
-      
         this.physics.pause();
         player.disableBody(true,true);
         goal.destroy();
