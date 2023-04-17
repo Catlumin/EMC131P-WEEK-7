@@ -31,7 +31,7 @@ class level1 extends Phaser.Scene{
     }
 
     preload (){
-        this.load.image('bg', 'assets/background/background_cave.png');
+        this.load.image('bg', 'assets/background/Flat Night 2 BG.png');
         this.load.image('frog', 'assets/enemy/frog-x4.gif');
         this.load.image('bullet', 'assets/misc/fire-ball.gif');
         this.load.image('platform', 'assets/misc/platform.png')
@@ -47,10 +47,10 @@ class level1 extends Phaser.Scene{
         this.load.tilemapTiledJSON('map1', 'assets/maps/map1.json');
     }
     create(){
-
+    //BACKGROUND
+    this.add.image(400, 300, 'bg');
+    
     //MAP
-  
-
     const map = this.make.tilemap({key : 'map1'});
     const tileSet = map.addTilesetImage('mapcompact', 'tiles');
     worldLayer =  map.createLayer('worldLayer', tileSet);
@@ -60,8 +60,8 @@ class level1 extends Phaser.Scene{
     map.createLayer('backGroundObject', tileSet);
     goal = map.createLayer('flag', tileSet);
     goal.setCollisionByExclusion([-1]);
-    //BACKGROUND
-
+   
+   
 
 
     //PLATFORM
@@ -92,10 +92,10 @@ class level1 extends Phaser.Scene{
 
     //CAMERA
     this.cameras.main.startFollow(player);
-    //this.cameras.main.setZoom(2.5);
+    this.cameras.main.setZoom(2.5);
     this.cameras.main.setLerp(0.1, 0.1);
     this.cameras.main.setBounds(0,0, this.widthInPixels, this.heightInPixels);
-      //COIN
+    //COIN
     coin = this.physics.add.group({
         key: 'coins',
         repeat: 4,
@@ -126,10 +126,10 @@ class level1 extends Phaser.Scene{
     });
 
     //SCORE TEXT & GAME TIME
-    scoreText = this.add.text(0, 0, 'Score: 0', { fontSize: '32px', fill: '#fff' }).setScale(.5);
-    chestCollectedText = this.add.text(0, 20, 'Chest Smashed: 0', { fontSize: '32px', fill: '#fff' }).setScale(.5);
-    playerTimeText = this.add.text(0, 60, 'Time: 0:00', { fontSize: '32px', fill: '#fff' }).setScale(.5);
-    playerTextHP = this.add.text(0, 40, 'Health Left : 3', { fontSize: '32px', fill: '#fff' }).setScale(.5);
+    scoreText = this.add.text(250,190, 'Score: 0', { fontSize: '32px', fill: '#fff' }).setScale(.3);
+    chestCollectedText = this.add.text(250, 200, 'Chest Smashed: 0', { fontSize: '32px', fill: '#fff' }).setScale(.3);
+    playerTimeText = this.add.text(250, 220, 'Time: 0:00', { fontSize: '32px', fill: '#fff' }).setScale(.3);
+    playerTextHP = this.add.text(250, 210, 'Health Left : 3', { fontSize: '32px', fill: '#fff' }).setScale(.3);
     scoreText.setScrollFactor(0);
     playerTimeText.setScrollFactor(0);
     playerTextHP.setScrollFactor(0);
