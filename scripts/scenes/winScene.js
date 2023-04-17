@@ -18,7 +18,7 @@ class winScene extends Phaser.Scene{
         const playerSeconds = seconds.toString().padStart(2, '0');
         const playerChestScore = chestSmashed;
         this.add.image(400, 300, 'winBg').setScale(1.5);
-        const gameOverText = this.add.text(400, 300, 'You Won!\nScore: '+ playerScore + '\nTime Survived: '+ playerMinutes +':'+ playerSeconds +'\nChest Smashed' + playerChestScore , {
+        const gameOverText = this.add.text(400, 300, 'You Won!\nScore: '+ playerScore + '\nTime Survived: '+ playerMinutes +':'+ playerSeconds +'\nChest Smashed: ' + playerChestScore , {
             fontFamily: 'Arial',
             fontSize: '32px',
             fill: '#fff'

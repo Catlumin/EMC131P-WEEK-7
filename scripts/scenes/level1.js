@@ -92,7 +92,7 @@ class level1 extends Phaser.Scene{
 
     //CAMERA
     this.cameras.main.startFollow(player);
-    this.cameras.main.setZoom(2.5);
+    //this.cameras.main.setZoom(2.5);
     this.cameras.main.setLerp(0.1, 0.1);
     this.cameras.main.setBounds(0,0, this.widthInPixels, this.heightInPixels);
       //COIN
@@ -122,6 +122,7 @@ class level1 extends Phaser.Scene{
         child.y = yEnemyPos[index];
         child.setScale(.2);
         child.flipX = true;
+        child.body.immovable = true;
     });
 
     //SCORE TEXT & GAME TIME
