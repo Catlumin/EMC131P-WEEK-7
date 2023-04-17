@@ -24,10 +24,9 @@ var acidLayer;
 var goal;
 var chestSmashed = 0;
 var chestCollectedText;
-var currentStage = 0; 
-class level1 extends Phaser.Scene{
+class level3 extends Phaser.Scene{
     constructor(){
-        super('level1');
+        super('level3');
         
     }
 
@@ -170,10 +169,9 @@ class level1 extends Phaser.Scene{
         playerOnVoid(this);
     }
     collectFlag(player, goal) {
-      
         this.physics.pause();
         player.disableBody(true,true);
         goal.destroy();
-        this.scene.start('level2',score = 0 , playerTime = 0,chestSmashed = 0, gameBGM.stop());
+        this.scene.start('winScene',score,minutes,seconds,chestSmashed,gameBGM.stop());
       }
 }

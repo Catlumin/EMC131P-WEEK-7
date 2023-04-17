@@ -9,7 +9,7 @@ var config = {
             debug: false
         }
     },
-    scene: [menuScene,level1,creditScene,gameOverScene,winScene]
+    scene: [menuScene,level1,level2,level3,creditScene,gameOverScene,winScene]
 };
 var game = new Phaser.Game(config);
 
@@ -27,11 +27,6 @@ function playerOnVoid(game){
     }
 }
 
-function getFlag(player, goal){
-    this.physics.pause();
-    player.disableBody(true,true);
-    this.scene.start('winScene',score,minutes,seconds,chestSmashed,gameBGM.stop());
-}
 function collideEnemies(player,enemy){
    if(player.body.touching.down && enemy.body.touching.up){ 
     enemy.destroy();
