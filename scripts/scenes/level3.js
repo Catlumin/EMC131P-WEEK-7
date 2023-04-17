@@ -1,6 +1,6 @@
 var player;
 var enemy;
-var flag;
+var flagThird;
 var score = 0;
 var scoreText;
 var playerTime = 0;
@@ -11,17 +11,17 @@ var gameBGM;
 var cursors;
 var playerHP = 3;
 var playerTextHP;
-var xEnemyPos = [172,314,263,535,609,871];
-var yEnemyPos = [238,274,203,165,257,255];
+var xEnemyPosThird = [244,407,331,535,680,944];
+var yEnemyPosThird = [219,219,165,165,273,255];
 var coin;
-var coinPosX = [180,273,444,775,951];
-var coinPosY = [147,274,237,292,309];
+var coinPosXThird = [411,133,539,775,805];
+var coinPosYThird = [219,219,200,292,273];
 var splatEnemy;
 var playerIsHit;
 var crateCollideSFX;
-var worldLayer;
-var acidLayer;
-var goal;
+var worldLayerThird;
+var acidLayerThird;
+var goalThird;
 var chestSmashed = 0;
 var chestCollectedText;
 class level3 extends Phaser.Scene{
@@ -42,24 +42,24 @@ class level3 extends Phaser.Scene{
         this.load.audio('levelBGM', 'assets/sounds/in-the-wreckage.wav');
         this.load.audio('hit', 'assets/sounds/03_Step_grass_03.wav');
         this.load.audio('crateSFX', 'assets/sounds/03_crate_open_1.wav');
-
         this.load.image('tiles', 'assets/spritesheet/tilemap_packed.png');
-        this.load.tilemapTiledJSON('map1', 'assets/maps/map1.json');
+        this.load.tilemapTiledJSON('map3', 'assets/maps/map3.json');
     }
     create(){
     //BACKGROUND
-    this.add.image(400, 300, 'bg');
+    let bg = this.add.image(400, 300, 'bg');
+    bg.setScrollFactor(0);
 
     //MAP
-    const map = this.make.tilemap({key : 'map1'});
-    const tileSet = map.addTilesetImage('mapcompact', 'tiles');
-    worldLayer =  map.createLayer('worldLayer', tileSet);
-    worldLayer.setCollisionByExclusion([-1]);
-    acidLayer = map.createLayer('acidLayer', tileSet);
-    acidLayer.setCollisionByExclusion([-1]);
-    map.createLayer('backGroundObject', tileSet);
-    goal = map.createLayer('flag', tileSet);
-    goal.setCollisionByExclusion([-1]);
+    const map = this.make.tilemap({key : 'map3'});
+    const tileSet = map.addTilesetImage('tilemap_packed', 'tiles');
+    worldLayerThird =  map.createLayer('groundLayerThird', tileSet);
+    worldLayerThird.setCollisionByExclusion([-1]);
+    acidLayerThird = map.createLayer('acidLayerThird', tileSet);
+    acidLayerThird.setCollisionByExclusion([-1]);
+    map.createLayer('backGroundThird', tileSet);
+    flagThird = map.createLayer('flagThird', tileSet);
+    flagThird.setCollisionByExclusion([-1]);
    
     //SOUND
     splatEnemy = this.sound.add('splat');
@@ -71,10 +71,10 @@ class level3 extends Phaser.Scene{
     playerIsHit = this.sound.add('hit');
     crateCollideSFX = this.sound.add('crateSFX');
     //GOAL
-    goal = this.physics.add.group({
+    goalThird = this.physics.add.group({
         key: 'flag',
         repeat: 0,
-        setXY:  {x:887,y:167, stepX: 0}
+        setXY:  {x:1067,y:235, stepX: 0}
     });
   
     //PLAYER
@@ -87,7 +87,7 @@ class level3 extends Phaser.Scene{
 
     //CAMERA
     this.cameras.main.startFollow(player);
-    this.cameras.main.setZoom(2.5);
+    //this.cameras.main.setZoom(2.5);
     this.cameras.main.setLerp(0.1, 0.1);
     this.cameras.main.setBounds(0,0, this.widthInPixels, this.heightInPixels);
     //COIN
@@ -99,8 +99,8 @@ class level3 extends Phaser.Scene{
                  stepX: 40 }
     })
     coin.children.iterate(function (child, index){
-        child.x = coinPosX[index];
-        child.y = coinPosY[index];
+        child.x = coinPosXThird[index];
+        child.y = coinPosYThird[index];
         child.setScale(1);
         child.setGravity(0);
     });
@@ -113,8 +113,8 @@ class level3 extends Phaser.Scene{
                  stepX: 40 }
     });
     enemy.children.iterate(function (child, index) {
-        child.x = xEnemyPos[index];
-        child.y = yEnemyPos[index];
+        child.x = xEnemyPosThird[index];
+        child.y = yEnemyPosThird[index];
         child.setScale(.2);
         child.flipX = true;
         child.body.immovable = true;
@@ -133,12 +133,12 @@ class level3 extends Phaser.Scene{
     //KEYS
     cursors = this.input.keyboard.createCursorKeys();
     //COLLIDER
-    this.physics.add.collider(player, worldLayer);
-    this.physics.add.collider(enemy, worldLayer);
-    this.physics.add.collider(goal, worldLayer);
-    this.physics.add.collider(coin, worldLayer);
+    this.physics.add.collider(player, worldLayerThird);
+    this.physics.add.collider(enemy, worldLayerThird);
+    this.physics.add.collider(goalThird, worldLayerThird);
+    this.physics.add.collider(coin, worldLayerThird);
     this.physics.add.collider(player,enemy,collideEnemies,null, this);
-    this.physics.add.overlap(player,goal,this.collectFlag,null,this);
+    this.physics.add.overlap(player,goalThird,this.collectFlag,null,this);
     this.physics.add.overlap(player,coin,getCoin,null,this);
     }
     update(){
@@ -164,7 +164,7 @@ class level3 extends Phaser.Scene{
         }
         //TIMER
         timer();
-        //console.log('Player X: ' + player.x + ' Plyer Y: ' + player.y)
+    
         //Check if player on Void
         playerOnVoid(this);
     }

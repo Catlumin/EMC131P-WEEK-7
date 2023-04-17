@@ -1,6 +1,6 @@
 var player;
 var enemy;
-var flag;
+var flagSecond;
 var score = 0;
 var scoreText;
 var playerTime = 0;
@@ -11,17 +11,17 @@ var gameBGM;
 var cursors;
 var playerHP = 3;
 var playerTextHP;
-var xEnemyPosTwo = [119,204,303,275,330,754];
-var yEnemyPosTwo = [150,150,150,150,150,150];
+var xEnemyPosSecond = [119,943,303,275,330,754];
+var yEnemyPosSecond = [150,-16,150,150,150,150];
 var coin;
-var coinPosXTwo = [116,300,911,962,762];
-var coinPosYTwo = [101,150,150,150,150];
+var coinPosXSecond = [116,300,911,962,762];
+var coinPosYSecond = [101,150,150,150,150];
 var splatEnemy;
 var playerIsHit;
 var crateCollideSFX;
-var worldLayerTwo;
-var acidLayerTwo;
-var goalTwo;
+var worldLayerSecond;
+var acidLayerSecond;
+var goalSecond;
 var chestSmashed = 0;
 var chestCollectedText;
 class level2 extends Phaser.Scene{
@@ -47,18 +47,19 @@ class level2 extends Phaser.Scene{
     }
     create(){
     //BACKGROUND
-    this.add.image(400, 300, 'bg');
+    let bg = this.add.image(400, 300, 'bg');
+    bg.setScrollFactor(0);
 
     //MAP
     const map = this.make.tilemap({key : 'map2'});
     const tileSet = map.addTilesetImage('tilemap_packed', 'tiled');
-    worldLayerTwo =  map.createLayer('groundLayer', tileSet);
-    worldLayerTwo.setCollisionByExclusion([-1]);
-    acidLayerTwo = map.createLayer('acid2Layer', tileSet);
-    acidLayerTwo.setCollisionByExclusion([-1]);
+    worldLayerSecond =  map.createLayer('groundLayer', tileSet);
+    worldLayerSecond.setCollisionByExclusion([-1]);
+    acidLayerSecond = map.createLayer('acid2Layer', tileSet);
+    acidLayerSecond.setCollisionByExclusion([-1]);
     map.createLayer('backGroundLayer', tileSet);
-    goalTwo = map.createLayer('flag', tileSet);
-    goalTwo.setCollisionByExclusion([-1]);
+    flagSecond= map.createLayer('flag', tileSet);
+    flagSecond.setCollisionByExclusion([-1]);
    
     //SOUND
     splatEnemy = this.sound.add('splat');
@@ -70,7 +71,7 @@ class level2 extends Phaser.Scene{
     playerIsHit = this.sound.add('hit');
     crateCollideSFX = this.sound.add('crateSFX');
     //GOAL
-    goal = this.physics.add.group({
+    goalSecond = this.physics.add.group({
         key: 'flag',
         repeat: 0,
         setXY:  {x:1071,y:237, stepX: 0}
@@ -98,8 +99,8 @@ class level2 extends Phaser.Scene{
                  stepX: 40 }
     })
     coin.children.iterate(function (child, index){
-        child.x = coinPosXTwo[index];
-        child.y = coinPosYTwo[index];
+        child.x = coinPosXSecond[index];
+        child.y = coinPosYSecond[index];
         child.setScale(1);
         child.setGravity(0);
     });
@@ -112,8 +113,8 @@ class level2 extends Phaser.Scene{
                  stepX: 40 }
     });
     enemy.children.iterate(function (child, index) {
-        child.x = xEnemyPosTwo[index];
-        child.y = yEnemyPosTwo[index];
+        child.x = xEnemyPosSecond[index];
+        child.y = yEnemyPosSecond[index];
         child.setScale(.2);
         child.flipX = true;
         child.body.immovable = true;
@@ -132,12 +133,12 @@ class level2 extends Phaser.Scene{
     //KEYS
     cursors = this.input.keyboard.createCursorKeys();
     //COLLIDER
-    this.physics.add.collider(player, worldLayerTwo);
-    this.physics.add.collider(enemy, worldLayerTwo);
-    this.physics.add.collider(goal, worldLayerTwo);
-    this.physics.add.collider(coin, worldLayerTwo);
+    this.physics.add.collider(player, worldLayerSecond);
+    this.physics.add.collider(enemy, worldLayerSecond);
+    this.physics.add.collider(goalSecond, worldLayerSecond);
+    this.physics.add.collider(coin, worldLayerSecond);
     this.physics.add.collider(player,enemy,collideEnemies,null, this);
-    this.physics.add.overlap(player,goal,this.collectFlag,null,this);
+    this.physics.add.overlap(player,goalSecond,this.collectFlag,null,this);
     this.physics.add.overlap(player,coin,getCoin,null,this);
     }
     update(){
@@ -163,7 +164,7 @@ class level2 extends Phaser.Scene{
         }
         //TIMER
         timer();
-        console.log('Player X: ' + player.x + ' Plyer Y: ' + player.y)
+       
         //Check if player on Void
         playerOnVoid(this);
     }

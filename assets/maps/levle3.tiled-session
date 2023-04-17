@@ -1,0 +1,47 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "level3.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "level3.tmx": {
+            "scale": 2,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 211.25,
+                "y": 235.75
+            }
+        },
+        "level3.tmx#tilemap_packed": {
+            "scaleInDock": 1
+        },
+        "mapcompact3.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "C:/Users/Jugaire/Desktop/EMC131P-WEEK-7/assets/maps",
+    "last.imagePath": "C:/Users/Jugaire/Desktop/EMC131P-WEEK-7/assets/spritesheet",
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 18,
+    "map.tileWidth": 18,
+    "map.width": 60,
+    "openFiles": [
+        "mapcompact3.tsx",
+        "level3.tmx"
+    ],
+    "project": "levle3.tiled-project",
+    "recentFiles": [
+        "mapcompact3.tsx",
+        "level3.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 18,
+        "width": 18
+    }
+}

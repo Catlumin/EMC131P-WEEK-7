@@ -43,14 +43,13 @@ class level1 extends Phaser.Scene{
         this.load.audio('levelBGM', 'assets/sounds/in-the-wreckage.wav');
         this.load.audio('hit', 'assets/sounds/03_Step_grass_03.wav');
         this.load.audio('crateSFX', 'assets/sounds/03_crate_open_1.wav');
-
         this.load.image('tiles', 'assets/spritesheet/tilemap_packed.png');
         this.load.tilemapTiledJSON('map1', 'assets/maps/map1.json');
     }
     create(){
     //BACKGROUND
-    this.add.image(400, 300, 'bg');
-
+    let bg = this.add.image(400, 300, 'bg');
+    bg.setScrollFactor(0);
     //MAP
     const map = this.make.tilemap({key : 'map1'});
     const tileSet = map.addTilesetImage('mapcompact', 'tiles');
@@ -59,8 +58,8 @@ class level1 extends Phaser.Scene{
     acidLayer = map.createLayer('acidLayer', tileSet);
     acidLayer.setCollisionByExclusion([-1]);
     map.createLayer('backGroundObject', tileSet);
-    goal = map.createLayer('flag', tileSet);
-    goal.setCollisionByExclusion([-1]);
+    flag = map.createLayer('flag', tileSet);
+    flag.setCollisionByExclusion([-1]);
    
     //SOUND
     splatEnemy = this.sound.add('splat');
@@ -162,12 +161,12 @@ class level1 extends Phaser.Scene{
     
         if (cursors.up.isDown && player.body.onFloor())
         {
-            player.setVelocityY(-400);
+            player.setVelocityY(-200);
             
         }
         //TIMER
         timer();
-        //console.log('Player X: ' + player.x + ' Plyer Y: ' + player.y)
+        
         //Check if player on Void
         playerOnVoid(this);
     }
