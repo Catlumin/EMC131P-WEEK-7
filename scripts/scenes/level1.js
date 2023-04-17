@@ -49,7 +49,7 @@ class level1 extends Phaser.Scene{
     create(){
     //BACKGROUND
     this.add.image(400, 300, 'bg');
-    
+
     //MAP
     const map = this.make.tilemap({key : 'map1'});
     const tileSet = map.addTilesetImage('mapcompact', 'tiles');
@@ -61,11 +61,6 @@ class level1 extends Phaser.Scene{
     goal = map.createLayer('flag', tileSet);
     goal.setCollisionByExclusion([-1]);
    
-   
-
-
-    //PLATFORM
-
     //SOUND
     splatEnemy = this.sound.add('splat');
     playerIsHit = this.sound.add('hit');
