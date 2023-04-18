@@ -142,7 +142,7 @@ class level3 extends Phaser.Scene{
     this.physics.add.overlap(player,coin,getCoin,null,this);
     }
     update(){
-        if (cursors.left.isDown)
+        if (cursors.left.isDown)    
         {
             player.setVelocityX(-160);
             player.flipX = true;
